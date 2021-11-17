@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bingo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="w3-center">
+        <form action="" enctype='multipart/form-data' method='POST'>
+            <input id="target" name="target" type="number" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{target}}">
+            <input type="submit" value="分析" class="w3-button w3-red" style="margin-top:5px;width:100%"/>
+        </form>
+    </div>
+
+    <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-blue w3-left-align">開獎號碼</button>
+    <div id="Demo1" class="w3-hide w3-container">
+        <p>{{userinput|safe}}</p>
+    </div>
+    <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-blue w3-left-align">熱門球號</button>
+    <div id="Demo2" class="w3-hide w3-container">
+        <p>{{connum1|safe}}</p>
+    </div>
+    <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-blue w3-left-align">熱門2球號</button>
+    <div id="Demo3" class="w3-hide w3-container">
+        <p>{{connum2|safe}}</p>
+    </div>
+    <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-blue w3-left-align">熱門3球號</button>
+    <div id="Demo4" class="w3-hide w3-container">
+        <p>{{connum3|safe}}</p>
+    </div>
+    
+    <p>熱門球號圖：</p>
+    <img src="{{ url_for('static', filename= './images/test1.jpg',_t=val1) }}"  alt="" style="width:100%"/>
+
+
+    <script>
+        function myFunction(id) {
+          var x = document.getElementById(id);
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className = 
+            x.previousElementSibling.className.replace("w3-blue", "w3-grey");
+          } else { 
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className = 
+            x.previousElementSibling.className.replace("w3-grey", "w3-blue");
+          }
+        }
+        </script>
+
+</body>
+</html>
