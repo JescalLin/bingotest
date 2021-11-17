@@ -102,5 +102,5 @@ def bingo():
  
  
 if __name__ == '__main__':
-    #app.run(host='10.9.31.18', port=8000 ,debug=True)
-    app.run()
+    app.run(host='10.9.31.18', port=8000 ,debug=True)
+    #app.run()
