@@ -10,6 +10,7 @@ from matplotlib import colors
 import seaborn as sns
 from collections import Counter
 from itertools import combinations
+import cv2
 
 target = 0
 
@@ -96,32 +97,32 @@ def bingo():
         for i in range(target):
             user_input = user_input +str(num_data[i])+"</br>"
 
-        # for k in range(5):
-        #     plt.cla()
-        #     plt.clf()
-        #     cmap = colors.ListedColormap(['Blue','red'])
-        #     plt.pcolor(all_num_array[k],cmap=cmap,edgecolors='k', linewidths=3)
-        #     ax = plt.gca()
-        #     ax.xaxis.set_ticks_position('top')
-        #     ax.invert_yaxis() 
+        for k in range(5):
+            plt.cla()
+            plt.clf()
+            cmap = colors.ListedColormap(['Blue','red'])
+            plt.pcolor(all_num_array[k],cmap=cmap,edgecolors='k', linewidths=3)
+            ax = plt.gca()
+            ax.xaxis.set_ticks_position('top')
+            ax.invert_yaxis() 
 
-        #     for y in range(8):
-        #         for x in range(10):
-        #             plt.text(x+0.5, y+0.5, str(y*10+x+1),
-        #                     horizontalalignment='center',
-        #                     verticalalignment='center',
-        #                     color = "w", 
-        #                     )
+            for y in range(8):
+                for x in range(10):
+                    plt.text(x+0.5, y+0.5, str(y*10+x+1),
+                            horizontalalignment='center',
+                            verticalalignment='center',
+                            color = "w", 
+                            )
             
-        #     plt.savefig("static/images/p_"+str(k)+".jpg")
+            plt.savefig("static/images/p_"+str(k)+".jpg")
 
-        # img0 = cv2.imread("static/images/p_0.jpg")
-        # img1 = cv2.imread("static/images/p_1.jpg")
-        # img2 = cv2.imread("static/images/p_2.jpg")
-        # img3 = cv2.imread("static/images/p_3.jpg")
-        # img4 = cv2.imread("static/images/p_4.jpg")
-        # v_img = cv2.vconcat([img0,img1,img2,img3,img4])
-        # cv2.imwrite("static/images/test2.jpg",v_img)
+        img0 = cv2.imread("static/images/p_0.jpg")
+        img1 = cv2.imread("static/images/p_1.jpg")
+        img2 = cv2.imread("static/images/p_2.jpg")
+        img3 = cv2.imread("static/images/p_3.jpg")
+        img4 = cv2.imread("static/images/p_4.jpg")
+        v_img = cv2.vconcat([img0,img1,img2,img3,img4])
+        cv2.imwrite("static/images/test2.jpg",v_img)
 
 
         return render_template('bingo_ok.html',target=target,userinput=user_input,connum1=str(sorted_x1),connum2=str(sorted_x2),connum3=str(sorted_x3))
