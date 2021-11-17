@@ -96,6 +96,20 @@ def bingo():
         for i in range(target):
             user_input = user_input +str(num_data[i])+"</br>"
 
+        cmap = colors.ListedColormap(['Blue','red'])
+        plt.rcParams["figure.figsize"] = [20, 20]
+        for i in range(5):
+            plt.subplot(5, 1, i+1)
+            for y in range(8):
+                for x in range(10):
+                    plt.text(x, y, str(y*10+x+1),
+                            horizontalalignment='center',
+                            verticalalignment='center',
+                            color = "w", 
+                            )
+            plt.imshow(all_num_array[i],cmap=cmap)
+        plt.savefig("static/images/test2.jpg")
+
         return render_template('bingo_ok.html',target=target,userinput=user_input,connum1=str(sorted_x1),connum2=str(sorted_x2),connum3=str(sorted_x3))
  
     return render_template('bingo.html')
