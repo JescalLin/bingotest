@@ -12,7 +12,8 @@
 <body>
     <div class="w3-center">
         <form action="" enctype='multipart/form-data' method='POST'>
-            <input id="target" name="target" type="number" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{target}}">
+            虛擬下注:<input id="v_num" name="v_num" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="10,20,30">
+            分析組數:<input id="target" name="target" type="number" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{target}}">
             <input type="submit" value="分析" class="w3-button w3-red" style="margin-top:5px;width:100%"/>
         </form>
     </div>
@@ -21,9 +22,9 @@
     <div id="Demo1" class="w3-hide w3-container">
         <p>{{userinput|safe}}</p>
     </div>
-    <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-blue w3-left-align">熱門球號</button>
+    <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-blue w3-left-align">虛擬下注</button>
     <div id="Demo2" class="w3-hide w3-container">
-        <p>{{connum1|safe}}</p>
+        <p>{{v_text|safe}}</p>
     </div>
     <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-blue w3-left-align">熱門2球號</button>
     <div id="Demo3" class="w3-hide w3-container">
@@ -33,6 +34,11 @@
     <div id="Demo4" class="w3-hide w3-container">
         <p>{{connum3|safe}}</p>
     </div>
+    <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-blue w3-left-align">組間分析</button>
+    <div id="Demo5" class="w3-hide w3-container">
+        <p>{{spilt_num|safe}}</p>
+    </div>
+
     
     <p>熱門球號圖：</p>
     <img src="{{ url_for('static', filename= './images/test1.jpg') }}"  alt="" style="width:100%"/>

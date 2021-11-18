@@ -22,6 +22,7 @@ app.send_file_max_age_default = timedelta(seconds=1)
 def bingo():
     if request.method == 'POST':
         target = int(request.form.get('target'))
+        v_num = str(request.form.get('v_num'))
         res  = requests.get("https://www.taiwanlottery.com.tw/lotto/bingobingo/drawing.aspx")
         soup = BeautifulSoup(res.text,'html.parser')
         table = soup.find('table', attrs={'class':'tableFull'})
@@ -42,13 +43,6 @@ def bingo():
             target = len(num_data)
 
 
-        #一球熱門號碼
-        array1_all = []
-        for i in range(target):
-            for num in range(20):
-                array1_all.append(num_data[i][num])
-        d1 = Counter(array1_all)
-        sorted_x1 = sorted(d1.items(), key=lambda x1: x1[1], reverse=True)
         #二球熱門組合
         array2_all = []
         array2_temp = []
@@ -124,8 +118,67 @@ def bingo():
         v_img = cv2.vconcat([img0,img1,img2,img3,img4])
         cv2.imwrite("static/images/test2.jpg",v_img)
 
+        #組間分析
+        A_spilt_num = 0
+        B_spilt_num = 0
+        C_spilt_num = 0
+        D_spilt_num = 0
+        A_score = 0
+        B_score = 0
+        C_score = 0
+        D_score = 0
+        for k in range(target):
+            A_spilt_num_s = 0
+            B_spilt_num_s = 0
+            C_spilt_num_s = 0
+            D_spilt_num_s = 0
+            for i in range(80):
+                if i in num_data[k] and i<20:
+                    A_spilt_num = A_spilt_num +1
+                    A_spilt_num_s = A_spilt_num_s +1
+                if i in num_data[k] and i>=20 and i<40:
+                    B_spilt_num = B_spilt_num +1 
+                    B_spilt_num_s = B_spilt_num_s +1         
+                if i in num_data[k] and i>=41 and i<60:
+                    C_spilt_num = C_spilt_num +1
+                    C_spilt_num_s = C_spilt_num_s +1  
+                if i in num_data[k] and i>=61 and i<80:
+                    D_spilt_num = D_spilt_num +1 
+                    D_spilt_num_s = D_spilt_num_s +1  
 
-        return render_template('bingo_ok.html',target=target,userinput=user_input,connum1=str(sorted_x1),connum2=str(sorted_x2),connum3=str(sorted_x3))
+            temp_array = [A_spilt_num_s,B_spilt_num_s,C_spilt_num_s,D_spilt_num_s]
+            temp_array= sorted(temp_array,reverse=True)
+
+            for i in range(4):
+                if A_spilt_num_s == temp_array[i]:
+                    A_score = A_score + 3-i
+                if B_spilt_num_s == temp_array[i]:
+                    B_score = B_score + 3-i
+                if C_spilt_num_s == temp_array[i]:
+                    C_score = C_score + 3-i
+                if D_spilt_num_s == temp_array[i]:
+                    D_score = D_score + 3-i
+
+        spilt_num = "綜合</br>A組(1~20):"+str(A_spilt_num)+"</br>"+"B組(21~40):"+str(B_spilt_num)+"</br>"+"C組(41~60):"+str(C_spilt_num)+"</br>"+"D組(61~80):"+str(D_spilt_num)+"</br>"
+        spilt_num = "</br>"+spilt_num+"</br>分次</br>A組(1~20):"+str(A_score)+"</br>"+"B組(21~40):"+str(B_score)+"</br>"+"C組(41~60):"+str(C_score)+"</br>"+"D組(61~80):"+str(D_score)+"</br>"
+
+        #虛擬下注
+        v_num = v_num.split(',')
+        v_num = list(map(int, v_num))
+        v_text = ""
+        for k in range(target):
+            bingo_result = 0
+            for i in range(3):
+                if v_num[i] in num_data[k]:
+                    bingo_result = bingo_result + 1
+            v_text = v_text + "第"+str(k+1)+"組:中"+str(bingo_result)+"星</br>"
+                
+                    
+            
+
+
+
+        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text)
  
     return render_template('bingo.html')
  
