@@ -181,14 +181,14 @@ def bingo():
                 v_money = v_money + 500
                 v_tempmoney = 500
             v_text = v_text + "第"+str(k+1)+"組:中"+str(bingo_result)+"星 賺"+str(v_tempmoney)+"元</br> "
-        v_text = v_text + "總損益:"+ str(v_money-(25*target))+"元"
+        v_final_money =  "總損益:"+ str(v_money-(25*target))+"元"
                 
                     
             
 
 
 
-        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num)
+        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money)
  
     return render_template('bingo.html')
  
