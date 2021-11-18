@@ -163,7 +163,7 @@ def bingo():
         spilt_num = "</br>"+spilt_num+"</br>分次</br>A組(1~20):"+str(A_score)+"</br>"+"B組(21~40):"+str(B_score)+"</br>"+"C組(41~60):"+str(C_score)+"</br>"+"D組(61~80):"+str(D_score)+"</br>"
 
         #虛擬下注
-        v_num = v_num.split(',')
+        v_num = v_num.split(' ')
         v_num = list(map(int, v_num))
         v_text = ""
         for k in range(target):
