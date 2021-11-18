@@ -185,7 +185,7 @@ def bingo():
                 
                     
             
-
+        
 
 
         return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money)

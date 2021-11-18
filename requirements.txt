@@ -30,3 +30,4 @@ tomli==1.2.2
 urllib3==1.26.7
 Werkzeug==2.0.2
 opencv-python-headless
+APScheduler
