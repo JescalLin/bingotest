@@ -1,2 +1,2 @@
 CALL activate tt
-CALL python app_local.py
+CALL python app.py
