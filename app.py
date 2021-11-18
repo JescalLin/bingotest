@@ -164,7 +164,7 @@ def bingo():
 
         #虛擬下注
         v_num_a = v_num.split(' ')
-        v_num_a = list(map(int, v_num))
+        v_num_a = list(map(int, v_num_a))
         v_text = ""
         v_text = "下注成本:"+str(25*target)+"</br>"
         v_money = 0
