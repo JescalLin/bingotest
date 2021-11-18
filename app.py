@@ -163,22 +163,32 @@ def bingo():
         spilt_num = "</br>"+spilt_num+"</br>分次</br>A組(1~20):"+str(A_score)+"</br>"+"B組(21~40):"+str(B_score)+"</br>"+"C組(41~60):"+str(C_score)+"</br>"+"D組(61~80):"+str(D_score)+"</br>"
 
         #虛擬下注
-        v_num = v_num.split(' ')
-        v_num = list(map(int, v_num))
+        v_num_a = v_num.split(' ')
+        v_num_a = list(map(int, v_num))
         v_text = ""
+        v_text = "下注成本:"+str(25*target)+"</br>"
+        v_money = 0
         for k in range(target):
             bingo_result = 0
+            v_tempmoney = 0
             for i in range(3):
-                if v_num[i] in num_data[k]:
+                if v_num_a[i] in num_data[k]:
                     bingo_result = bingo_result + 1
-            v_text = v_text + "第"+str(k+1)+"組:中"+str(bingo_result)+"星</br>"
+            if bingo_result == 2:
+                v_money = v_money + 50
+                v_tempmoney = 50
+            if bingo_result == 3:
+                v_money = v_money + 500
+                v_tempmoney = 500
+            v_text = v_text + "第"+str(k+1)+"組:中"+str(bingo_result)+"星 賺"+str(v_tempmoney)+"元</br> "
+        v_text = v_text + "總損益:"+ str(v_money-(25*target))+"元"
                 
                     
             
 
 
 
-        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text)
+        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num)
  
     return render_template('bingo.html')
  
