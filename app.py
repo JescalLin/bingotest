@@ -214,6 +214,38 @@ def bingo():
         for i in range(80):
             noopen_num = noopen_num + str(i+1)+":"+str(b_count[i])+"</br>"
 
+        
+
+        #開獎表格
+
+        all_num_array_1D=[]
+        for k in range(target):
+            num_array = [0]*80
+            for i in range(80):
+                if (i+1) in num_data[k]:
+                    num_array[i]=1
+            all_num_array_1D.append(num_array)
+
+
+        plt.figure(figsize=(32,10))
+        plt.cla()
+        plt.clf()
+        cmap = colors.ListedColormap(['Blue','red'])
+        plt.pcolor(all_num_array_1D,cmap=cmap,edgecolors='k', linewidths=3)
+
+        ax = plt.gca()
+        ax.xaxis.set_ticks_position('top')
+        ax.set_aspect('equal')
+        ax.xaxis.set_major_locator(plt.MultipleLocator(1))
+        ax.yaxis.set_major_locator(plt.MultipleLocator(1))
+        ax.invert_yaxis() 
+
+        # 去除白框
+        plt.margins(0,0)
+        plt.subplots_adjust(top=1,bottom=0,left=0,right=1,hspace=0,wspace=0)
+        # 保存图片，cmap为调整配色方案
+        plt.savefig("static/images/numb.jpg")
+
 
                     
         

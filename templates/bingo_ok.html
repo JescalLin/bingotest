@@ -105,12 +105,18 @@
     <div id="Demo6" class="w3-hide w3-container">
         <p>{{noopen_num|safe}}</p>
     </div>
+    <button onclick="myFunction('Demo7')" class="w3-button w3-block w3-blue w3-left-align">開獎表格</button>
+    <div id="Demo7" class="w3-hide w3-container">
+        <img src="{{ url_for('static', filename= './images/numb.jpg') }}"  alt="" style="width:100%"/>
+    </div>
 
-    
+
     <p>熱門球號圖：</p>
     <img src="{{ url_for('static', filename= './images/test1.jpg') }}"  alt="" style="width:100%"/>
     <p>最新五期開獎：</p>
     <img src="{{ url_for('static', filename= './images/test2.jpg') }}"  alt="" style="width:100%"/>
+
+
 
     <script>
         function myFunction(id) {

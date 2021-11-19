@@ -1,3 +1,18 @@
+from flask import Flask, render_template, request, redirect, url_for, make_response,jsonify
+from werkzeug.utils import secure_filename
+from datetime import timedelta
+import requests
+from bs4 import BeautifulSoup
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt 
+from matplotlib import colors
+from matplotlib.pyplot import MultipleLocator
+import seaborn as sns
+from collections import Counter
+from itertools import combinations
+import cv2
+
 
 #27
 num_data=[
@@ -10,51 +25,66 @@ num_data=[
 ,[6, 7, 10, 15, 18, 25, 26, 27, 33, 34, 43, 47, 51, 59, 62, 64, 65, 67, 72, 73]
 ,[1, 2, 4, 7, 10, 13, 16, 17, 22, 33, 37, 41, 42, 45, 46, 50, 61, 64, 69, 70]
 ,[4, 6, 9, 15, 17, 20, 24, 27, 31, 32, 38, 41, 47, 50, 52, 53, 54, 55, 58, 59]
-,[1, 3, 11, 14, 16, 17, 20, 33, 34, 37, 43, 49, 50, 54, 57, 58, 64, 65, 74, 78]
-,[1, 5, 8, 9, 13, 15, 16, 17, 29, 31, 32, 37, 45, 48, 58, 63, 71, 72, 73, 76]
-,[4, 23, 24, 25, 26, 33, 37, 43, 45, 47, 50, 51, 52, 55, 59, 61, 63, 72, 76, 79]
-,[6, 8, 9, 10, 17, 25, 34, 36, 38, 42, 45, 47, 53, 57, 64, 66, 67, 68, 72, 79]
-,[9, 13, 21, 25, 27, 28, 29, 30, 34, 41, 42, 50, 51, 58, 61, 62, 63, 64, 74, 76]
-,[3, 17, 19, 20, 21, 22, 24, 25, 29, 31, 41, 43, 49, 50, 53, 63, 68, 69, 73, 74]
-,[3, 9, 10, 11, 18, 23, 25, 31, 33, 34, 40, 42, 44, 45, 48, 52, 70, 71, 73, 75]
-,[1, 6, 8, 14, 23, 25, 28, 29, 37, 38, 45, 48, 53, 54, 55, 57, 65, 70, 74, 76]
-,[4, 10, 12, 22, 23, 24, 27, 30, 32, 37, 38, 40, 41, 45, 46, 50, 56, 58, 63, 71]
-,[3, 5, 9, 12, 14, 15, 21, 23, 26, 33, 35, 37, 38, 41, 43, 46, 58, 60, 69, 72]
-,[4, 10, 17, 19, 23, 24, 25, 32, 37, 41, 42, 47, 53, 55, 60, 62, 63, 64, 67, 73]
-,[5, 8, 16, 18, 27, 35, 41, 42, 46, 47, 50, 51, 55, 56, 58, 62, 67, 75, 76, 77]
-,[4, 6, 15, 16, 23, 27, 36, 43, 46, 48, 49, 54, 57, 59, 62, 64, 73, 74, 75, 76]
-,[7, 13, 14, 15, 16, 19, 20, 26, 35, 37, 47, 51, 53, 58, 60, 64, 66, 67, 72, 77]
-,[1, 4, 9, 11, 16, 17, 29, 33, 41, 43, 45, 49, 50, 52, 53, 58, 70, 71, 77, 78]
-,[4, 6, 7, 9, 15, 18, 23, 24, 33, 41, 43, 45, 47, 48, 59, 64, 65, 66, 77, 80]
-,[1, 4, 11, 15, 17, 18, 19, 22, 23, 30, 36, 37, 40, 48, 57, 61, 66, 67, 79, 80]
-,[8, 10, 11, 13, 16, 27, 33, 35, 37, 42, 43, 44, 47, 51, 55, 64, 65, 71, 75, 78]]
+,[1, 3, 11, 14, 16, 17, 20, 33, 34, 37, 43, 49, 50, 54, 57, 58, 64, 65, 74, 78]]
+
+all_num_array_1D=[]
+for k in range(len(num_data)):
+    num_array = [0]*80
+    for i in range(80):
+        if (i+1) in num_data[k]:
+            num_array[i]=1
+    all_num_array_1D.append(num_array)
+
+
+
+plt.figure(figsize=(32,10))
+plt.cla()
+plt.clf()
+cmap = colors.ListedColormap(['Blue','red'])
+plt.pcolor(all_num_array_1D,cmap=cmap,edgecolors='k', linewidths=3)
+
+ax = plt.gca()
+ax.xaxis.set_ticks_position('top')
+ax.set_aspect('equal')
+ax.xaxis.set_major_locator(MultipleLocator(1))
+ax.yaxis.set_major_locator(MultipleLocator(1))
+ax.invert_yaxis() 
+
+# 去除白框
+plt.margins(0,0)
+plt.subplots_adjust(top=1,bottom=0,left=0,right=1,hspace=0,wspace=0)
+# 保存图片，cmap为调整配色方案
+plt.savefig("static/images/numb.jpg")
+
 
 #[1,7,0,1,0,.....]
 
-
-temp_array = []
-for k in range(len(num_data)):
-    b_target = [0]*80
-    for i in range(80):
-        ball_num = i+1
-        if ball_num in num_data[k]:
-            b_target[i] = 1
-        else:
-            b_target[i] = 0
-    temp_array.append(b_target)
-
-b_count = [0]*80
-
-for k in range(80):
-    for i in range(len(temp_array)):
-        if temp_array[i][k]==0:
-            b_count[k]=b_count[k]+1
-        else:
-            break
-
-noopen_b = ""
-for i in range(80):
-    noopen_b = noopen_b + str(i+1)+":"+str(b_count[i])+"\n"
+# temp_array = []
+# for k in range(len(num_data)):
+#     b_target = [0]*80
+#     for i in range(80):
+#         ball_num = i+1
+#         if ball_num in num_data[k]:
+#             b_target[i] = 1
+#         else:
+#             b_target[i] = 0
+#     temp_array.append(b_target)
 
 
-print(noopen_b)
+# b_count = [0]*80
+
+# for k in range(80):
+#     for i in range(len(temp_array)):
+#         if temp_array[i][k]==0:
+#             b_count[k]=b_count[k]+1
+#         else:
+#             break
+
+# noopen_b = ""
+# for i in range(80):
+#     noopen_b = noopen_b + str(i+1)+":"+str(b_count[i])+"\n"
+
+
+# print(noopen_b)
+
+
