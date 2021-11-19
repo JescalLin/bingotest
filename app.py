@@ -23,7 +23,7 @@ def stock():
     if request.method == 'POST':
         target = str(request.form.get('target'))
         log = "開發中，敬請期待"
-        return render_template('stock_ok.html',target=target,log=log,target=target)
+        return render_template('stock_ok.html',target=target,log=log)
     return render_template('stock.html')
 
 @app.route('/bingo', methods=['POST', 'GET'])  
