@@ -23,23 +23,28 @@ def bingo():
     if request.method == 'POST':
         target = int(request.form.get('target'))
         v_num = str(request.form.get('v_num'))
-        res  = requests.get("https://www.taiwanlottery.com.tw/lotto/bingobingo/drawing.aspx")
+        b_date = str(request.form.get('b_date'))
+        b_date_str = b_date.replace("-", "")
+        url="https://lotto.auzonet.com/bingobingo/list_"+b_date_str+".html"
+
+        all_num_array = list()
+        time_date = list()
+        num_data = list()
+        res  = requests.get(url)
         soup = BeautifulSoup(res.text,'html.parser')
-        table = soup.find('table', attrs={'class':'tableFull'})
-        table = table.find("tr")
-        raw_data = []
-        num_data = []
-        rows = table.find_all('tr')[3:]
-        all_num_array = []
-        for row in rows:
-            cols = row.find_all('td')
-            cols = [ele.text.strip() for ele in cols]
-            data = [ele for ele in cols if ele] # Get rid of empty values
-            raw_data.append(data)
-            data_num = data[1].replace("  ", " ")
-            data_num =list(map(int, data_num.strip().split()))  
-            num_data.append(data_num)  
-        if target ==0:
+        table = soup.find('table', {'bordercolor': '#C0C0C0'})
+        trs = table.find_all('tr', {'class': 'bingo_row'})
+        tds = table.find_all('td', {'class': 'BPeriod'})
+        for td in tds:
+            time_date.append(td.text[-5:])
+        for tr in trs:
+            temp_row = list()
+            temp_show_row = list()
+            for div in tr.find_all('div'):
+                temp_row.append(int(div.text))
+            num_data.append(temp_row)
+
+        if target ==0 or target > len(num_data):
             target = len(num_data)
 
 
@@ -89,7 +94,7 @@ def bingo():
         plt.savefig("static/images/test1.jpg")
         user_input = ""
         for i in range(target):
-            user_input = user_input +str(num_data[i])+"</br>"
+            user_input = user_input +str(time_date[i])+" "+str(num_data[i])+"</br>"
 
         for k in range(5):
             plt.cla()
@@ -180,15 +185,41 @@ def bingo():
             if bingo_result == 3:
                 v_money = v_money + 500
                 v_tempmoney = 500
-            v_text = v_text + "第"+str(k+1)+"組:中"+str(bingo_result)+"星 賺"+str(v_tempmoney)+"元</br> "
+            v_text = v_text + str(time_date[k])+" 中"+str(bingo_result)+"星 賺"+str(v_tempmoney)+"元</br> "
         v_final_money =  "總損益:"+ str(v_money-(25*target))+"元"
-                
+
+
+        #連續未開
+        temp_array = []
+        for k in range(len(num_data)):
+            b_target = [0]*80
+            for i in range(80):
+                ball_num = i+1
+                if ball_num in num_data[k]:
+                    b_target[i] = 1
+                else:
+                    b_target[i] = 0
+            temp_array.append(b_target)
+
+        b_count = [0]*80
+
+        for k in range(80):
+            for i in range(len(temp_array)):
+                if temp_array[i][k]==0:
+                    b_count[k]=b_count[k]+1
+                else:
+                    break
+
+        noopen_num = ""
+        for i in range(80):
+            noopen_num = noopen_num + str(i+1)+":"+str(b_count[i])+"</br>"
+
+
                     
-            
         
 
 
-        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money)
+        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money,b_date=b_date,noopen_num=noopen_num)
  
     return render_template('bingo.html')
  

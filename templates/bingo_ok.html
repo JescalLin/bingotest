@@ -5,13 +5,14 @@
     <title>Bingo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.png') }}">
 </head>
 <body>
     <div class="w3-center">
         <form action="" enctype='multipart/form-data' method='POST'>
+            分析日期:<input id="b_date" name="b_date" type="date" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{b_date}}">
             虛擬下注:<input id="v_num" name="v_num" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{v_num}}">
             分析組數:<input id="target" name="target" type="number" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{target}}">
             <input type="submit" value="分析" class="w3-button w3-red" style="margin-top:5px;width:100%"/>
@@ -38,6 +39,10 @@
     <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-blue w3-left-align">組間分析</button>
     <div id="Demo5" class="w3-hide w3-container">
         <p>{{spilt_num|safe}}</p>
+    </div>
+    <button onclick="myFunction('Demo6')" class="w3-button w3-block w3-blue w3-left-align">連續未開</button>
+    <div id="Demo6" class="w3-hide w3-container">
+        <p>{{noopen_num|safe}}</p>
     </div>
 
     
