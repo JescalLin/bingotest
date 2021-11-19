@@ -18,6 +18,14 @@ app = Flask(__name__)
 # 設置靜態文件緩存過期時間
 app.send_file_max_age_default = timedelta(seconds=1)
  
+@app.route('/stock', methods=['POST', 'GET'])  
+def stock():
+    if request.method == 'POST':
+        target = str(request.form.get('target'))
+        log = "開發中，敬請期待"
+        return render_template('stock_ok.html',target=target,log=log,target=target)
+    return render_template('stock.html')
+
 @app.route('/bingo', methods=['POST', 'GET'])  
 def bingo():
     if request.method == 'POST':
@@ -257,5 +265,4 @@ def bingo():
  
  
 if __name__ == '__main__':
-    #app.run(host='10.9.31.18', port=8000 ,debug=True)
     app.run()

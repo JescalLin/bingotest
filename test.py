@@ -36,7 +36,6 @@ for k in range(len(num_data)):
     all_num_array_1D.append(num_array)
 
 
-
 plt.figure(figsize=(32,10))
 plt.cla()
 plt.clf()
