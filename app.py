@@ -11,6 +11,7 @@ import seaborn as sns
 from collections import Counter
 from itertools import combinations
 import cv2
+import math
 
 target = 0
 
@@ -21,9 +22,30 @@ app.send_file_max_age_default = timedelta(seconds=1)
 @app.route('/stock', methods=['POST', 'GET'])  
 def stock():
     if request.method == 'POST':
-        target = str(request.form.get('target'))
-        log = "開發中，敬請期待"
-        return render_template('stock_ok.html',target=target,log=log)
+        target = float(request.form.get('target'))
+        lingu_fee_o = 0
+        lingu_fee = 0
+        fee = 0.001425
+        log = ""
+        temp_min = 100000
+        temp_index = 0
+        for i in range(1000):
+            input_v = i+1
+            input_count = math.ceil(1000/input_v)
+            lingu_fee_o = input_v*fee*target
+            lingu_fee = math.floor(lingu_fee_o)
+            if(lingu_fee<2):
+                lingu_fee = 1
+            if lingu_fee*input_count > temp_min:
+                pass
+            else:
+                temp_min = lingu_fee*input_count
+                temp_index = input_v
+            log = log + " "+str(input_v)+" "+str(input_count)+" "+str(lingu_fee)+" "+str(lingu_fee*input_count)+"</br>"
+        
+        best="最佳零股:"+str(temp_index)+" 手續費:"+str(temp_min)+"</br>"
+
+        return render_template('stock_ok.html',target=target,log=log,best=best)
     return render_template('stock.html')
 
 @app.route('/bingo', methods=['POST', 'GET'])  
