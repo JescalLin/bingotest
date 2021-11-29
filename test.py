@@ -13,6 +13,7 @@ from collections import Counter
 from itertools import combinations
 import cv2
 import math
+import pandas as pd
 
 lingu_fee_o = 0
 lingu_fee = 0

@@ -12,6 +12,7 @@ from collections import Counter
 from itertools import combinations
 import cv2
 import math
+import pandas as pd
 
 target = 0
 
@@ -246,42 +247,51 @@ def bingo():
 
         
 
-        # #開獎表格
+        # #馬可夫矩陣
 
-        # all_num_array_1D=[]
-        # for k in range(target):
-        #     num_array = [0]*80
-        #     for i in range(80):
-        #         if (i+1) in num_data[k]:
-        #             num_array[i]=1
-        #     all_num_array_1D.append(num_array)
+        df_all = pd.DataFrame(num_data[::-1])
+        # x: current number, y: next number
+        # stat[x, y] = the counts of when current index is x and the next index is y
+        stat = np.zeros((81, 81), dtype=float)
+        # the last data will not be used.
+        # the last data will be used to get the furture prediction
+        for i in range(len(df_all.values)-1):
+            for j in range(20):
+                x = df_all.values[i][j]
+                for y in df_all.values[i+1]:
+                    stat[x, y] += 1.0
+        print(stat)
 
-
-        # plt.figure(figsize=(32,10))
-        # plt.cla()
-        # plt.clf()
-        # cmap = colors.ListedColormap(['Blue','red'])
-        # plt.pcolor(all_num_array_1D,cmap=cmap,edgecolors='k', linewidths=3)
-
-        # ax = plt.gca()
-        # ax.xaxis.set_ticks_position('top')
-        # ax.set_aspect('equal')
-        # ax.xaxis.set_major_locator(plt.MultipleLocator(1))
-        # ax.yaxis.set_major_locator(plt.MultipleLocator(1))
-        # ax.invert_yaxis() 
-
-        # # 去除白框
-        # plt.margins(0,0)
-        # plt.subplots_adjust(top=1,bottom=0,left=0,right=1,hspace=0,wspace=0)
-        # # 保存图片，cmap为调整配色方案
-        # plt.savefig("static/images/numb.jpg")
+        summary = np.zeros(81, dtype=float)
+        percent = np.zeros((81, 81), dtype=float)
+        for i in range(81):
+            summary[i] = np.sum(stat[i])
+            for j in range(81):
+                if stat[i, j] != 0:
+                    percent[i ,j] = stat[i, j] / summary[i]
 
 
-                    
-        
+        last = df_all.values[len(df_all.values)-1]
+        print(last)
+        predict = []
+        for i in range(len(last)):
+            idx = np.argsort(stat[last[i]])
+            predict.append(int(idx[75]))
+            predict.append(int(idx[76]))
+            predict.append(int(idx[77]))
+            predict.append(int(idx[78]))
+            predict.append(int(idx[79]))
+            predict.append(int(idx[80]))
 
+        d = Counter(predict)
+        sorted_x = sorted(d.items(), key=lambda x: x[1], reverse=True)
+        predict=[]
+        for i in range(5):
+            predict.append(sorted_x[i][0])
 
-        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money,b_date=b_date,noopen_num=noopen_num)
+                
+
+        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money,b_date=b_date,noopen_num=noopen_num,predict=str(predict))
  
     return render_template('bingo.html')
  
