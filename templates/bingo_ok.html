@@ -76,6 +76,7 @@
             分析日期:<input id="b_date" name="b_date" type="date" class="w3-center" style="margin-bottom:5px;width:100%" value="{{b_date}}">
             虛擬下注:<input id="v_num" name="v_num" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{v_num}}">
             分析組數:<input id="target" name="target" type="number" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{target}}">
+            分析球號:<input id="ball" type="number" name="ball" class="w3-input w3-center" style="margin-bottom:5px;width:100%" value="{{ball}}">
             <input type="submit" value="分析" class="w3-button w3-red" style="margin-top:5px;width:100%"/>
         </form>
     </div>
@@ -109,6 +110,12 @@
     <div id="Demo7" class="w3-hide w3-container">
         <!-- <img src="{{ url_for('static', filename= './images/numb.jpg') }}"  alt="" style="width:100%"/> -->
         <p>{{predict|safe}}</p>
+    </div>
+
+    <button onclick="myFunction('Demo8')" class="w3-button w3-block w3-blue w3-left-align">球號分析</button>
+    <div id="Demo8" class="w3-hide w3-container">
+        <!-- <img src="{{ url_for('static', filename= './images/numb.jpg') }}"  alt="" style="width:100%"/> -->
+        <p>{{ball_num|safe}}</p>
     </div>
 
 

@@ -53,6 +53,7 @@ def stock():
 def bingo():
     if request.method == 'POST':
         target = int(request.form.get('target'))
+        ball = int(request.form.get('ball'))
         v_num = str(request.form.get('v_num'))
         b_date = str(request.form.get('b_date'))
         b_date_str = b_date.replace("-", "")
@@ -254,9 +255,15 @@ def bingo():
 
 
         for i in range(len(sorted_x2)):
-            if index == str(sorted_x2[i][0][0]):
+            if index == str(sorted_x2[i][0][0]) or index == str(sorted_x2[i][0][1]):
                 noopen_num=noopen_num+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
-  
+
+        ball_num = ""
+        ball = str(ball)
+        ball = ball.zfill(2)
+        for i in range(len(sorted_x2)):
+            if ball == str(sorted_x2[i][0][0]) or ball == str(sorted_x2[i][0][1]):
+                ball_num=ball_num+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
         
 
         # #馬可夫矩陣
@@ -301,7 +308,7 @@ def bingo():
 
                 
 
-        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money,b_date=b_date,noopen_num=noopen_num,predict=str(predict))
+        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money,b_date=b_date,noopen_num=noopen_num,predict=str(predict),ball_num=ball_num,ball=ball)
  
     return render_template('bingo.html')
  
