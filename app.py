@@ -249,7 +249,7 @@ def bingo():
         tmp = max(b_count)
         index = b_count.index(tmp)
         index = str(index+1)
-        index = index.zfill(2)
+
 
         noopen_num = noopen_num+"最多期未開號碼"+str(index)+"</br>"
 
@@ -260,7 +260,6 @@ def bingo():
 
         ball_num = ""
         ball = str(ball)
-        ball = ball.zfill(2)
         for i in range(len(sorted_x2)):
             if ball == str(sorted_x2[i][0][0]) or ball == str(sorted_x2[i][0][1]):
                 ball_num=ball_num+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
@@ -300,15 +299,22 @@ def bingo():
             predict.append(int(idx[79]))
             predict.append(int(idx[80]))
 
+        predict_text="</br>"
+
         d = Counter(predict)
         sorted_x = sorted(d.items(), key=lambda x: x[1], reverse=True)
         predict=[]
         for i in range(5):
             predict.append(sorted_x[i][0])
 
+        for i in range(len(sorted_x2)):
+            for j in range(5):
+                nummv= str(predict[j])
+                if nummv == str(sorted_x2[i][0][0]) or nummv == str(sorted_x2[i][0][1]):
+                    predict_text=predict_text+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
                 
 
-        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money,b_date=b_date,noopen_num=noopen_num,predict=str(predict),ball_num=ball_num,ball=ball)
+        return render_template('bingo_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),spilt_num=str(spilt_num),v_text=v_text,v_num=v_num,v_final_money=v_final_money,b_date=b_date,noopen_num=noopen_num,predict=str(predict)+predict_text,ball_num=ball_num,ball=ball)
  
     return render_template('bingo.html')
  
