@@ -245,6 +245,18 @@ def bingo():
         for i in range(80):
             noopen_num = noopen_num + str(i+1)+":"+str(b_count[i])+"</br>"
 
+        tmp = max(b_count)
+        index = b_count.index(tmp)
+        index = str(index+1)
+        index = index.zfill(2)
+
+        noopen_num = noopen_num+"最多期未開號碼"+str(index)+"</br>"
+
+
+        for i in range(len(sorted_x2)):
+            if index == str(sorted_x2[i][0][0]):
+                noopen_num=noopen_num+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
+  
         
 
         # #馬可夫矩陣
@@ -260,7 +272,6 @@ def bingo():
                 x = df_all.values[i][j]
                 for y in df_all.values[i+1]:
                     stat[x, y] += 1.0
-        print(stat)
 
         summary = np.zeros(81, dtype=float)
         percent = np.zeros((81, 81), dtype=float)
@@ -272,7 +283,6 @@ def bingo():
 
 
         last = df_all.values[len(df_all.values)-1]
-        print(last)
         predict = []
         for i in range(len(last)):
             idx = np.argsort(stat[last[i]])
