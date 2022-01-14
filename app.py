@@ -76,7 +76,7 @@ def lottery():
             sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
-            num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(balls[0].encode_contents()),int(sp_ball.encode_contents())])
+            num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(sp_ball.encode_contents())])
             time_date_2021.append(str(time.encode_contents().decode("utf-8")))
 
         num_data_2021 = num_data_2021[::-1]
@@ -94,7 +94,7 @@ def lottery():
             sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
-            num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(balls[0].encode_contents()),int(sp_ball.encode_contents())])
+            num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(sp_ball.encode_contents())])
             time_date_2022.append(str(time.encode_contents().decode("utf-8")))
 
         num_data_2022 = num_data_2022[::-1]
