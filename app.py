@@ -190,6 +190,9 @@ def lottery():
         predict = []
         for i in range(len(last)):
             idx = np.argsort(stat[last[i]])
+            predict.append(int(idx[40]))
+            predict.append(int(idx[41]))
+            predict.append(int(idx[42]))
             predict.append(int(idx[43]))
             predict.append(int(idx[44]))
             predict.append(int(idx[45]))
@@ -203,11 +206,11 @@ def lottery():
         d = Counter(predict)
         sorted_x = sorted(d.items(), key=lambda x: x[1], reverse=True)
         predict=[]
-        for i in range(7):
+        for i in range(10):
             predict.append(sorted_x[i][0])
 
         for i in range(len(sorted_x2)):
-            for j in range(7):
+            for j in range(10):
                 nummv= str(predict[j])
                 if nummv == str(sorted_x2[i][0][0]) or nummv == str(sorted_x2[i][0][1]):
                     predict_text=predict_text+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
