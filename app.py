@@ -109,7 +109,7 @@ def lottery():
         num_data = num_data[0:target]
         time_date = time_date[0:target]
 
-
+        user_input = ""
         for i in range(target):
             user_input = user_input +str(time_date[i])+" "+str(num_data[i])+"</br>"
 

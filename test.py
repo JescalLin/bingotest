@@ -75,6 +75,5 @@ time_date = time_date[::-1]
 num_data = num_data[0:target]
 time_date = time_date[0:target]
 
-print(time_date)
-print(num_data)
+
 
