@@ -163,9 +163,60 @@ def lottery():
         noopen_num = noopen_num+"最多期未開號碼"+str(index)+"</br>"
 
 
+        # #馬可夫矩陣
+
+        df_all = pd.DataFrame(num_data[::-1])
+        # x: current number, y: next number
+        # stat[x, y] = the counts of when current index is x and the next index is y
+        stat = np.zeros((50, 50), dtype=float)
+        # the last data will not be used.
+        # the last data will be used to get the furture prediction
+        for i in range(len(df_all.values)-1):
+            for j in range(7):
+                x = df_all.values[i][j]
+                for y in df_all.values[i+1]:
+                    stat[x, y] += 1.0
+
+        summary = np.zeros(50, dtype=float)
+        percent = np.zeros((50, 50), dtype=float)
+        for i in range(50):
+            summary[i] = np.sum(stat[i])
+            for j in range(50):
+                if stat[i, j] != 0:
+                    percent[i ,j] = stat[i, j] / summary[i]
 
 
-        return render_template('lottery_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),noopen_num=noopen_num)
+        last = df_all.values[len(df_all.values)-1]
+        predict = []
+        for i in range(len(last)):
+            idx = np.argsort(stat[last[i]])
+            predict.append(int(idx[43]))
+            predict.append(int(idx[44]))
+            predict.append(int(idx[45]))
+            predict.append(int(idx[46]))
+            predict.append(int(idx[47]))
+            predict.append(int(idx[48]))
+            predict.append(int(idx[49]))
+
+        predict_text="</br>"
+
+        d = Counter(predict)
+        sorted_x = sorted(d.items(), key=lambda x: x[1], reverse=True)
+        predict=[]
+        for i in range(7):
+            predict.append(sorted_x[i][0])
+
+        for i in range(len(sorted_x2)):
+            for j in range(7):
+                nummv= str(predict[j])
+                if nummv == str(sorted_x2[i][0][0]) or nummv == str(sorted_x2[i][0][1]):
+                    predict_text=predict_text+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
+
+
+
+
+
+        return render_template('lottery_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),noopen_num=noopen_num,predict=str(predict)+predict_text)
     return render_template('lottery.html')
 
 
