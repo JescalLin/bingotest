@@ -59,16 +59,59 @@ def lottery():
         target = int(request.form.get('target'))
         time_date = list()
         num_data = list()
-        with open('./data/大樂透_2021.csv', newline='' ,encoding="utf-8") as csvfile:
-            # 讀取 CSV 檔內容，將每一列轉成一個 dictionary
-            rows = csv.DictReader(csvfile)
-            # 以迴圈輸出指定欄位
-            for row in rows:
-                time_date.append(row['期別'])
-                num_data.append([int(row['獎號1']),int(row['獎號2']),int(row['獎號3']),int(row['獎號4']),int(row['獎號5']),int(row['獎號6']),int(row['特別號'])])
+        time_date_2021 = list()
+        num_data_2021 = list()
+        time_date_2022 = list()
+        num_data_2022 = list()
+
+
+        url="https://lotto.auzonet.com/biglotto/list_2021_all.html"
+        res  = requests.get(url)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text,'html.parser')
+        table = soup.find_all('table', {'class': 'history_view_table'})
+        for i in range(len(table)):
+            li = table[i].find('li', {'class': 'ball_blue'})
+            balls = li.find_all('a', {'class': 'history_ball_link'})
+            sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
+            td = table[i].find('td', {'rowspan': '2','align':"center"})
+            time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(balls[0].encode_contents()),int(sp_ball.encode_contents())])
+            time_date_2021.append(str(time.encode_contents().decode("utf-8")))
+
+        num_data_2021 = num_data_2021[::-1]
+        time_date_2021 = time_date_2021[::-1]
+
+
+        url="https://lotto.auzonet.com/biglotto/list_2022_all.html"
+        res  = requests.get(url)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text,'html.parser')
+        table = soup.find_all('table', {'class': 'history_view_table'})
+        for i in range(len(table)):
+            li = table[i].find('li', {'class': 'ball_blue'})
+            balls = li.find_all('a', {'class': 'history_ball_link'})
+            sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
+            td = table[i].find('td', {'rowspan': '2','align':"center"})
+            time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(balls[0].encode_contents()),int(sp_ball.encode_contents())])
+            time_date_2022.append(str(time.encode_contents().decode("utf-8")))
+
+        num_data_2022 = num_data_2022[::-1]
+        time_date_2022 = time_date_2022[::-1]
+
+        num_data = num_data_2021 + num_data_2022
+        time_date = time_date_2021 + time_date_2022
 
         num_data = num_data[::-1]
+        time_date = time_date[::-1]
+
         num_data = num_data[0:target]
+        time_date = time_date[0:target]
+
+
+        for i in range(target):
+            user_input = user_input +str(time_date[i])+" "+str(num_data[i])+"</br>"
 
 
         #二球熱門組合
@@ -122,7 +165,7 @@ def lottery():
 
 
 
-        return render_template('lottery_ok.html',target=target,connum2=str(sorted_x2),connum3=str(sorted_x3),noopen_num=noopen_num)
+        return render_template('lottery_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),noopen_num=noopen_num)
     return render_template('lottery.html')
 
 
