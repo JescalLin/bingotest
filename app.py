@@ -52,6 +52,168 @@ def stock():
     return render_template('stock.html')
 
 
+@app.route('/lottery539', methods=['POST', 'GET'])  
+def lottery539():
+    if request.method == 'POST':
+        target = int(request.form.get('target'))
+        time_date = list()
+        num_data = list()
+        time_date_2021 = list()
+        num_data_2021 = list()
+        time_date_2022 = list()
+        num_data_2022 = list()
+
+
+        url="https://lotto.auzonet.com/daily539/list_2021_all.html"
+        res  = requests.get(url)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text,'html.parser')
+        table = soup.find_all('table', {'class': 'history_view_table'})
+        for i in range(len(table)):
+            li = table[i].find('li', {'class': 'ball_blue'})
+            balls = li.find_all('a', {'class': 'history_ball_link'})
+            td = table[i].find('td', {'rowspan': '2','align':"center"})
+            time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents())])
+            time_date_2021.append(str(time.encode_contents().decode("utf-8")))
+
+        num_data_2021 = num_data_2021[::-1]
+        time_date_2021 = time_date_2021[::-1]
+
+
+
+        url="https://lotto.auzonet.com/daily539/list_2022_all.html"
+        res  = requests.get(url)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text,'html.parser')
+        table = soup.find_all('table', {'class': 'history_view_table'})
+        for i in range(len(table)):
+            li = table[i].find('li', {'class': 'ball_blue'})
+            balls = li.find_all('a', {'class': 'history_ball_link'})
+            td = table[i].find('td', {'rowspan': '2','align':"center"})
+            time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents())])
+            time_date_2022.append(str(time.encode_contents().decode("utf-8")))
+
+        num_data_2022 = num_data_2022[::-1]
+        time_date_2022 = time_date_2022[::-1]
+
+        num_data = num_data_2021 + num_data_2022
+        time_date = time_date_2021 + time_date_2022
+
+        num_data = num_data[::-1]
+        time_date = time_date[::-1]
+
+        num_data = num_data[0:target]
+        time_date = time_date[0:target]
+
+        user_input = ""
+        for i in range(target):
+            user_input = user_input +str(time_date[i])+" "+str(num_data[i])+"</br>"
+
+
+        #二球熱門組合
+        array2_all = []
+        array2_temp = []
+        for i in range(target):
+            array2_temp = list(combinations(num_data[i], 2))
+            for j in range(len(array2_temp)):
+                array2_all.append(array2_temp[j])
+        d2 = Counter(array2_all)
+        sorted_x2 = sorted(d2.items(), key=lambda x2: x2[1], reverse=True)
+        #三球熱門組合
+        array3_all = []
+        array3_temp = []
+        for i in range(target):
+            array3_temp = list(combinations(num_data[i], 3))
+            for j in range(len(array3_temp)):
+                array3_all.append(array3_temp[j])
+        d3 = Counter(array3_all)
+        sorted_x3 = sorted(d3.items(), key=lambda x3: x3[1], reverse=True)
+        print(str(sorted_x2))
+        print(str(sorted_x3))
+
+
+        #連續未開
+        temp_array = []
+        for k in range(target):
+            b_target = [0]*39
+            for i in range(39):
+                ball_num = i+1
+                if ball_num in num_data[k]:
+                    b_target[i] = 1
+                else:
+                    b_target[i] = 0
+            temp_array.append(b_target)
+        b_count = [0]*39
+        for k in range(39):
+            for i in range(len(temp_array)):
+                if temp_array[i][k]==0:
+                    b_count[k]=b_count[k]+1
+                else:
+                    break
+        noopen_num = ""
+        for i in range(39):
+            noopen_num = noopen_num + str(i+1)+":"+str(b_count[i])+"</br>"
+        tmp = max(b_count)
+        index = b_count.index(tmp)
+        index = str(index+1)
+        noopen_num = noopen_num+"最多期未開號碼"+str(index)+"</br>"
+
+
+        # #馬可夫矩陣
+
+        df_all = pd.DataFrame(num_data[::-1])
+        # x: current number, y: next number
+        # stat[x, y] = the counts of when current index is x and the next index is y
+        stat = np.zeros((40, 40), dtype=float)
+        # the last data will not be used.
+        # the last data will be used to get the furture prediction
+        for i in range(len(df_all.values)-1):
+            for j in range(5):
+                x = df_all.values[i][j]
+                for y in df_all.values[i+1]:
+                    stat[x, y] += 1.0
+
+        summary = np.zeros(40, dtype=float)
+        percent = np.zeros((40, 40), dtype=float)
+        for i in range(40):
+            summary[i] = np.sum(stat[i])
+            for j in range(40):
+                if stat[i, j] != 0:
+                    percent[i ,j] = stat[i, j] / summary[i]
+
+
+        last = df_all.values[len(df_all.values)-1]
+        predict = []
+        for i in range(len(last)):
+            idx = np.argsort(stat[last[i]])
+            predict.append(int(idx[33]))
+            predict.append(int(idx[34]))
+            predict.append(int(idx[35]))
+            predict.append(int(idx[36]))
+            predict.append(int(idx[37]))
+            predict.append(int(idx[38]))
+            predict.append(int(idx[39]))
+
+        predict_text="</br>"
+
+        d = Counter(predict)
+        sorted_x = sorted(d.items(), key=lambda x: x[1], reverse=True)
+        predict=[]
+        for i in range(10):
+            predict.append(sorted_x[i][0])
+
+        for i in range(len(sorted_x2)):
+            for j in range(10):
+                nummv= str(predict[j])
+                if nummv == str(sorted_x2[i][0][0]) or nummv == str(sorted_x2[i][0][1]):
+                    predict_text=predict_text+(str(sorted_x2[i][0])+","+str(sorted_x2[i][1]))+"</br>"
+
+
+        return render_template('lottery539_ok.html',target=target,userinput=user_input,connum2=str(sorted_x2),connum3=str(sorted_x3),noopen_num=noopen_num,predict=str(predict)+predict_text)
+    return render_template('lottery539.html')
+
 
 @app.route('/lottery', methods=['POST', 'GET'])  
 def lottery():
