@@ -74,8 +74,15 @@ def lottery539():
             balls = li.find_all('a', {'class': 'history_ball_link'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            ti = str(td.contents[2])
+            ti = ti.replace("\n", "")
+            ti = ti.replace("b", "")
+            ti = ti.replace("<", "")
+            ti = ti.replace("/", "")
+            ti = ti.replace("r", "")
+            ti = ti.replace(">", "")
             num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents())])
-            time_date_2021.append(str(time.encode_contents().decode("utf-8")))
+            time_date_2021.append(str(time.encode_contents().decode("utf-8"))+ti)
 
         num_data_2021 = num_data_2021[::-1]
         time_date_2021 = time_date_2021[::-1]
@@ -92,8 +99,15 @@ def lottery539():
             balls = li.find_all('a', {'class': 'history_ball_link'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            ti = str(td.contents[2])
+            ti = ti.replace("\n", "")
+            ti = ti.replace("b", "")
+            ti = ti.replace("<", "")
+            ti = ti.replace("/", "")
+            ti = ti.replace("r", "")
+            ti = ti.replace(">", "")
             num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents())])
-            time_date_2022.append(str(time.encode_contents().decode("utf-8")))
+            time_date_2022.append(str(time.encode_contents().decode("utf-8"))+ti)
 
         num_data_2022 = num_data_2022[::-1]
         time_date_2022 = time_date_2022[::-1]
@@ -238,8 +252,15 @@ def lottery():
             sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            ti = str(td.contents[2])
+            ti = ti.replace("\n", "")
+            ti = ti.replace("b", "")
+            ti = ti.replace("<", "")
+            ti = ti.replace("/", "")
+            ti = ti.replace("r", "")
+            ti = ti.replace(">", "")
             num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(sp_ball.encode_contents())])
-            time_date_2021.append(str(time.encode_contents().decode("utf-8")))
+            time_date_2021.append(str(time.encode_contents().decode("utf-8"))+ti)
 
         num_data_2021 = num_data_2021[::-1]
         time_date_2021 = time_date_2021[::-1]
@@ -256,8 +277,15 @@ def lottery():
             sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+            ti = str(td.contents[2])
+            ti = ti.replace("\n", "")
+            ti = ti.replace("b", "")
+            ti = ti.replace("<", "")
+            ti = ti.replace("/", "")
+            ti = ti.replace("r", "")
+            ti = ti.replace(">", "")
             num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(sp_ball.encode_contents())])
-            time_date_2022.append(str(time.encode_contents().decode("utf-8")))
+            time_date_2022.append(str(time.encode_contents().decode("utf-8"))+ti)
 
         num_data_2022 = num_data_2022[::-1]
         time_date_2022 = time_date_2022[::-1]

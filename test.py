@@ -58,8 +58,19 @@ for i in range(len(table)):
     balls = li.find_all('a', {'class': 'history_ball_link'})
     td = table[i].find('td', {'rowspan': '2','align':"center"})
     time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
+    ti = str(td.contents[2])
+    ti = ti.replace("\n", "")
+    ti = ti.replace("b", "")
+    ti = ti.replace("<", "")
+    ti = ti.replace("/", "")
+    ti = ti.replace("r", "")
+    ti = ti.replace(">", "")
     num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents())])
-    time_date_2022.append(str(time.encode_contents().decode("utf-8")))
+    time_date_2022.append(str(time.encode_contents().decode("utf-8"))+ti)
+
+
+
+
 
 num_data_2022 = num_data_2022[::-1]
 time_date_2022 = time_date_2022[::-1]
@@ -73,5 +84,5 @@ time_date = time_date[::-1]
 num_data = num_data[0:target]
 time_date = time_date[0:target]
 
-for i in range(target):
-    print(time_date[i]+str(num_data[i]))
+# for i in range(target):
+#     print(td)
