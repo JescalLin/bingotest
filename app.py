@@ -1,4 +1,3 @@
-import imp
 from flask import Flask, render_template, request, redirect, url_for, make_response,jsonify
 from werkzeug.utils import secure_filename
 from datetime import timedelta
@@ -14,7 +13,7 @@ from itertools import combinations
 import cv2
 import math
 import pandas as pd
-import csv
+import re
 
 target = 0
 
@@ -74,15 +73,11 @@ def lottery539():
             balls = li.find_all('a', {'class': 'history_ball_link'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
-            ti = str(td.contents[2])
-            ti = ti.replace("\n", "")
-            ti = ti.replace("b", "")
-            ti = ti.replace("<", "")
-            ti = ti.replace("/", "")
-            ti = ti.replace("r", "")
-            ti = ti.replace(">", "")
+            ti = str(td)
+            mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2})",ti)
+            ti = str(mat.group(0))
             num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents())])
-            time_date_2021.append(str(time.encode_contents().decode("utf-8"))+ti)
+            time_date_2021.append(str(time.encode_contents().decode("utf-8"))+" "+ti)
 
         num_data_2021 = num_data_2021[::-1]
         time_date_2021 = time_date_2021[::-1]
@@ -99,15 +94,11 @@ def lottery539():
             balls = li.find_all('a', {'class': 'history_ball_link'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
-            ti = str(td.contents[2])
-            ti = ti.replace("\n", "")
-            ti = ti.replace("b", "")
-            ti = ti.replace("<", "")
-            ti = ti.replace("/", "")
-            ti = ti.replace("r", "")
-            ti = ti.replace(">", "")
+            ti = str(td)
+            mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2})",ti)
+            ti = str(mat.group(0))
             num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents())])
-            time_date_2022.append(str(time.encode_contents().decode("utf-8"))+ti)
+            time_date_2022.append(str(time.encode_contents().decode("utf-8"))+" "+ti)
 
         num_data_2022 = num_data_2022[::-1]
         time_date_2022 = time_date_2022[::-1]
@@ -123,7 +114,7 @@ def lottery539():
 
         user_input = ""
         for i in range(target):
-            user_input = user_input +str(time_date[i])+" "+str(num_data[i])+"</br>"
+            user_input = user_input +str(time_date[i])+"</br>"+str(num_data[i])+"</br>---------------"
 
 
         #二球熱門組合
@@ -252,15 +243,11 @@ def lottery():
             sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
-            ti = str(td.contents[2])
-            ti = ti.replace("\n", "")
-            ti = ti.replace("b", "")
-            ti = ti.replace("<", "")
-            ti = ti.replace("/", "")
-            ti = ti.replace("r", "")
-            ti = ti.replace(">", "")
+            ti = str(td)
+            mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2})",ti)
+            ti = str(mat.group(0))
             num_data_2021.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(sp_ball.encode_contents())])
-            time_date_2021.append(str(time.encode_contents().decode("utf-8"))+ti)
+            time_date_2021.append(str(time.encode_contents().decode("utf-8"))+" "+ti)
 
         num_data_2021 = num_data_2021[::-1]
         time_date_2021 = time_date_2021[::-1]
@@ -277,15 +264,11 @@ def lottery():
             sp_ball = table[i].find('td', attrs={'style':'color:#005aff; font-size:48px; font-weight:bolder;'})
             td = table[i].find('td', {'rowspan': '2','align':"center"})
             time = td.find('span', attrs={'style':'font-size:18px; color:#fb4202; font-weight:bold;'})
-            ti = str(td.contents[2])
-            ti = ti.replace("\n", "")
-            ti = ti.replace("b", "")
-            ti = ti.replace("<", "")
-            ti = ti.replace("/", "")
-            ti = ti.replace("r", "")
-            ti = ti.replace(">", "")
+            ti = str(td)
+            mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2})",ti)
+            ti = str(mat.group(0))
             num_data_2022.append([int(balls[0].encode_contents()),int(balls[1].encode_contents()),int(balls[2].encode_contents()),int(balls[3].encode_contents()),int(balls[4].encode_contents()),int(balls[5].encode_contents()),int(sp_ball.encode_contents())])
-            time_date_2022.append(str(time.encode_contents().decode("utf-8"))+ti)
+            time_date_2022.append(str(time.encode_contents().decode("utf-8"))+" "+ti)
 
         num_data_2022 = num_data_2022[::-1]
         time_date_2022 = time_date_2022[::-1]
@@ -301,7 +284,7 @@ def lottery():
 
         user_input = ""
         for i in range(target):
-            user_input = user_input +str(time_date[i])+" "+str(num_data[i])+"</br>"
+            user_input = user_input +str(time_date[i])+"</br>"+str(num_data[i])+"</br>---------------"
 
 
         #二球熱門組合
