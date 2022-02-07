@@ -71,6 +71,14 @@
 
 </head>
 <body>
+    <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <a href="https://bingoflask.herokuapp.com/lottery" class="w3-bar-item w3-button">大樂透</a>
+        <a href="https://bingoflask.herokuapp.com/lottery539" class="w3-bar-item w3-button">今彩539</a>
+        <a href="https://bingoflask.herokuapp.com/bingo" class="w3-bar-item w3-button">BingoBingo</a>
+        <a href="https://bingoflask.herokuapp.com/stock" class="w3-bar-item w3-button">股票手續費計算</a>
+    </div>
+    <button class="w3-button w3-green w3-xlarge" onclick="w3_open()">☰</button>
     <div class="w3-center">
         <form action="" enctype='multipart/form-data' method='POST'>
             分析日期:<input id="b_date" name="b_date" type="date" class="w3-center" style="margin-bottom:5px;width:100%" value="{{b_date}}">
@@ -145,3 +153,12 @@
 </html>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4099702434286902"
      crossorigin="anonymous"></script>
+<script>
+    function w3_open() {
+      document.getElementById("mySidebar").style.display = "block";
+    }
+    
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+    }
+</script>
