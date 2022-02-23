@@ -22,5 +22,8 @@ def timed_job_awake_your_app():
         r = requests.get(url)
         print("--> r.content")
         print(r.content)
+    else:
+        url = 'https://bingoflask.herokuapp.com/'
+        r = requests.get(url)
 
 sched.start()
